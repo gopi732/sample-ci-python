@@ -24,15 +24,15 @@ pipeline {
 		scannerHome = tool 'SonarQube Scanner'
 	    }
             steps {
-		echo "Unit Testing"
+                echo "Unit Testing"
                 sh 'python3 -m pytest'
-		echo "Test Coverage"
-		sh 'python3 -m coverage xml -o htmlcov/coverage.xml'
-		withSonarQubeEnv('admin') {
-		   sh '${scannerHome}/bin/sonar-scanner \
-		   -D sonar.projectKey=python-app \
-		   -D sonar.python.coverage.reportPaths=coverage.xml'	
-		}
+                echo "Test Coverage"
+                sh 'python3 -m coverage xml -o htmlcov/coverage.xml'
+                withSonarQubeEnv('admin') {
+                    sh '${scannerHome}/bin/sonar-scanner \
+                    -D sonar.projectKey=Test \
+                    -D sonar.python.coverage.reportPaths=coverage.xml'	
+                }
             }
         }
         stage ('Archive artifacts') {
@@ -42,10 +42,10 @@ pipeline {
         }
         stage ('Publish Artifactory') {
             steps {
-		withCredentials([usernamePassword(credentialsId: 'artifactory', passwordVariable: 'passwd', usernameVariable: 'user')]) {
-    		   sh 'jf rt upload htmlcov/ python-app/'
-		}
+                withCredentials([usernamePassword(credentialsId: 'artifactory', passwordVariable: 'passwd', usernameVariable: 'user')]) {
+                    sh 'jf rt upload htmlcov/ Test/'
+                }
             }
-	}
+        }
     }
 }
