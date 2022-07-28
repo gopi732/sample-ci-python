@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo "Unit Testing"
                 sh 'python3 -m pytest'
-                withSonarQubeEnv('admin') {
+                withSonarQubeEnv('Sonar') {
                     sh '${scannerHome}/bin/sonar-scanner \
                     -D sonar.projectKey=Test \
                     -D sonar.python.coverage.reportPaths=coverage.xml'	
