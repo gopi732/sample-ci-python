@@ -40,10 +40,19 @@ pipeline {
         }
         stage ('Publish Artifactory') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'artifactory', passwordVariable: 'passwd', usernameVariable: 'user')]) {
-                    sh 'jf rt upload coverage/ Test/'
-                }
+                rtUpload (
+                   serverId: 'admin',
+                   spec: '''{
+                          "files" :[
+                            {
+                               "pattern": "coverage/",
+                               "target": "Test/",
+                               "recursive": "false"
+                            }
+                          ]
+                    }'''
+                )
             }
-        }
+        }    
     }
 }
