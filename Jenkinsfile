@@ -27,7 +27,7 @@ pipeline {
                 echo "Unit Testing"
                 sh 'python3 -m pytest'
                 echo "Test Coverage"
-                sh 'python3 -m coverage xml -o htmlcov/coverage.xml'
+                sh 'python3 -m coverage xml -o coverage/coverage.xml'
                 withSonarQubeEnv('admin') {
                     sh '${scannerHome}/bin/sonar-scanner \
                     -D sonar.projectKey=Test \
