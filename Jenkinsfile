@@ -35,13 +35,13 @@ pipeline {
         }
         stage ('Archive artifacts') {
             steps {
-                archiveArtifacts artifacts: 'htmlcov/'
+                archiveArtifacts artifacts: 'coverage/'
             }
         }
         stage ('Publish Artifactory') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'artifactory', passwordVariable: 'passwd', usernameVariable: 'user')]) {
-                    sh 'jf rt upload htmlcov/ Test/'
+                    sh 'jf rt upload htmlcov/ coverage/'
                 }
             }
         }
