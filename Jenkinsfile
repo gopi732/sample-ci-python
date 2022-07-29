@@ -25,10 +25,10 @@ pipeline {
 	       scannerHome = tool 'SonarQube Scanner'
 	  }
 	  steps {
-	      withSonarQubeEnv('admin') {
+	      withSonarQubeEnv('Sonar') {
 		   sh '${scannerHome}/bin/sonar-scanner \
-		      -D sonar.projectKey=python-app \
-		      -D sonar.python.coverage.reportPaths=/home/node/workspace/python-ci_feature2/coverage/*.'
+		      -D sonar.projectKey=CI-Docker \
+		      -D sonar.python.coverage.reportPaths=/home//workspace/python-ci_feature2/coverage/*.'
 	      }
           }
 	  post {
