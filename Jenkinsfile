@@ -27,7 +27,8 @@ pipeline {
 	  steps {
 	      withSonarQubeEnv('Sonar') {
 		   sh '${scannerHome}/bin/sonar-scanner \
-		      -D sonar.projectKey=CI-Docker'
+		      -D sonar.projectKey=CI-Docker \
+		      -D sonar.python.coverage.reportPaths=/home/sai/workspace/Multibranch-Ci_master-ci-2/coverage/*.js,*.html,*.json,*.css'
 	      }
           }
 	  post {
