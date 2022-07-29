@@ -10,9 +10,8 @@ pipeline {
        stage('test') {
            steps {
                sh 'python3 -m pytest'
-               sh 'python3 -m coverage xml -o coverage/coverage.xml'
             }
-	    }
+	}
         stage ('Test & SonarQube Analysis') {
             environment {
                 scannerHome = tool 'SonarQube Scanner'
