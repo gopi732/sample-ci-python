@@ -19,7 +19,7 @@ pipeline {
             }
             steps {
                 withSonarQubeEnv('Sonar') {
-                    sh '${scannerHome}/bin/sonar-scanner --version'
+                    sh '${scannerHome}/bin/sonar-scanner \
                     -D sonar.projectKey=CI-Docker'	
                 }
             }
