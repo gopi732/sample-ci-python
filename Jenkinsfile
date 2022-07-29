@@ -27,8 +27,7 @@ pipeline {
 	  steps {
 	      withSonarQubeEnv('Sonar') {
 		   sh '${scannerHome}/bin/sonar-scanner \
-		      -D sonar.projectKey=CI-Docker \
-		      -D sonar.python.coverage.reportPaths=/home//workspace/python-ci_feature2/coverage/*.'
+		      -D sonar.projectKey=CI-Docker'
 	      }
           }
 	  post {
@@ -47,7 +46,6 @@ pipeline {
 		 spec: '''{
  			"files" :[
 			  {
-		            "pattern": "/home/node/workspace/python-ci_feature2/coverage",
 		            "target": "pythonapp/",
 	                    "recursive": "false"
 	         	  }
