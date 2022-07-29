@@ -46,7 +46,7 @@ pipeline {
                           "files" :[
                             {
                                "pattern": "coverage/",
-                               "target": "Deploy/",
+                               "target": "Test/",
                                "recursive": "false"
                             }
                           ]
