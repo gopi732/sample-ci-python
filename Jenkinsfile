@@ -1,13 +1,29 @@
 pipeline {
   agent none
-  environment {
-	http_proxy = 'http://127.0.0.1:3128/'
-	https_proxy = 'http://127.0.0.1:3128/'
-	ftp_proxy = 'http://127.0.0.1:3128/'
-	socks_proxy = 'socks://127.0.0.1:3128/'
-   }	
+  options {
+        // This is required if you want to clean before build
+        skipDefaultCheckout(true)
+  }
   stages {
-      stage('Build') {
+      stage('CleanUp WorkSpace') {
+	  agent { 
+	      label 'slave'
+	  }
+          steps {
+              // Clean before build
+              cleanWs()
+              // We need to explicitly checkout from SCM here
+              checkout scm
+              echo "Building ${env.JOB_NAME}..."
+          }
+	  post {
+              // Clean after build
+              always {
+		 echo "I Succeeded"
+              }
+          }
+      }	  
+      stage('Build & Test') {
          agent {
 	     dockerfile {
       	        filename 'Dockerfile'
@@ -27,14 +43,14 @@ pipeline {
 	  agent {
      	       label 'slave'
     	  }
-	  environment { 	  
+	  environment {
 	       scannerHome = tool 'SonarQube Scanner'
 	  }
 	  steps {
 	      withSonarQubeEnv('Sonar') {
 		   sh '${scannerHome}/bin/sonar-scanner \
 		      -D sonar.projectKey=CI-Docker \
-		      -D sonar.python.coverage.reportPaths=/home/sai/workspace/Multibranch-Ci_master-ci-2/coverage/*.js,*.html,*.json,*.css'
+		      -D sonar.python.coverage.reportPaths=coverage/*.js,*.html,*.json,*.css'
 	      }
           }
 	  post {
@@ -53,6 +69,7 @@ pipeline {
 		 spec: '''{
  			"files" :[
 			  {
+		            "pattern": "coverage/",
 		            "target": "CI-Docker",
 	                    "recursive": "false"
 	         	  }
