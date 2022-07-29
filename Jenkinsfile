@@ -46,7 +46,7 @@ pipeline {
 		 spec: '''{
  			"files" :[
 			  {
-		            "target": "pythonapp/",
+		            "target": "CI-Docker",
 	                    "recursive": "false"
 	         	  }
 		        ]
