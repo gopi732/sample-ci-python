@@ -57,7 +57,7 @@ pipeline {
 	      withSonarQubeEnv('Sonar') {
 		   sh '${scannerHome}/bin/sonar-scanner \
 		      -D sonar.projectKey=CI-Docker \
-		      -D sonar.python.coverage.reportPaths=coverage.xml'
+		      -D sonar.python.coverage.reportPaths=*.'
 	      }
           }
 	  post {
