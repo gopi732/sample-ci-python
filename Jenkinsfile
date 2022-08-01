@@ -36,8 +36,7 @@ pipeline {
 	     }	        
 	 }
 	 steps {
-	      sh 'python3 -m pytest'
-	      sh 'python3 -m coverage xml -o coverage/coverage.xml'	 
+	      sh 'python3 -m pytest'	 
 	 }
 	 post {
 	      always {
@@ -54,7 +53,7 @@ pipeline {
 	      withSonarQubeEnv('Sonar') {
 		   sh '${scannerHome}/bin/sonar-scanner \
 		      -D sonar.projectKey=CI-Docker \
-		      -D sonar.python.coverage.reportPaths=coverage.xml'
+		      -D sonar.python.coverage.reportPaths=*.js,*.xml,*.html,*css'
 	      }
           }
 	  post {
