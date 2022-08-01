@@ -1,5 +1,7 @@
 pipeline {
-  agent none
+  agent {
+	label 'slave'
+  }
   environment {   
         http_proxy = 'http://127.0.0.1:3128/'
         https_proxy = 'http://127.0.0.1:3128/'
@@ -11,10 +13,7 @@ pipeline {
         skipDefaultCheckout(true)
   }
   stages {
-      stage('CleanUp WorkSpace') {
-	  agent { 
-	      label 'slave'
-	  }
+      stage('CleanUp WorkSpace & Git Checkout') {
           steps {
               // Clean before build
               cleanWs()
@@ -33,11 +32,12 @@ pipeline {
          agent {
 	     dockerfile {
       	        filename 'Dockerfile'
-   	        label 'slave'
+   	        reuseNode true
 	     }	        
 	 }
 	 steps {
-	      sh 'python3 -m pytest'	 
+	      sh 'python3 -m pytest'
+	      sh 'python3 -m coverage xml -o coverage/coverage.xml'	 
 	 }
 	 post {
 	      always {
@@ -47,9 +47,6 @@ pipeline {
 	 }
       }	 
       stage('Code Analysis') {
-	  agent {
-     	       label 'slave'
-    	  }
 	  environment {
 	       scannerHome = tool 'SonarQube Scanner'
 	  }
@@ -57,7 +54,7 @@ pipeline {
 	      withSonarQubeEnv('Sonar') {
 		   sh '${scannerHome}/bin/sonar-scanner \
 		      -D sonar.projectKey=CI-Docker \
-		      -D sonar.python.coverage.reportPaths=*.js,*.json,*.html,*.css'
+		      -D sonar.python.coverage.reportPaths=coverage.xml'
 	      }
           }
 	  post {
@@ -67,9 +64,6 @@ pipeline {
 	  }
       }
       stage('Deploy Atrifacts') {
-	  agent {
-     	       label 'slave'
-    	  }
 	  steps {
 	      rtUpload (
 		 serverId: 'admin',
