@@ -25,7 +25,7 @@ pipeline {
 	  post {
               // Clean after build
               always {
-		 echo "I Succeeded"
+		 echo "Clone Code for GirHub Repository Succeeded"
               }
           }
       }	  
@@ -37,12 +37,12 @@ pipeline {
 	     }	        
 	 }
 	 steps {
-	      sh 'python3 -m pytest'
-	      sh 'python3 -m coverage xml -o coverage/coverage.xml'	 
+	      sh 'python3 -m pytest'	 
 	 }
 	 post {
 	      always {
 		   archiveArtifacts artifacts: 'coverage/'
+		   echo "Build Docker Image and test Conatainer and stop & delete Conatainer Succeeded"   
       	      }
 	 }
       }	 
@@ -62,7 +62,7 @@ pipeline {
           }
 	  post {
 	     always {
-		   echo "I Succeeded"
+		   echo "Integration and reports send to sonarqube Succeeded"
 	     }
 	  }
       }
@@ -86,7 +86,7 @@ pipeline {
 	 }
 	  post {
 	     always {
-		   echo "I Succeeded"
+		   echo "Deploy Artifacts Jfrog Succeeded"
 	     }
 	  }
       }
