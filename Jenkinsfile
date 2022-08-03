@@ -8,10 +8,6 @@ pipeline {
         ftp_proxy = 'http://127.0.0.1:3128/'
         socks_proxy = 'socks://127.0.0.1:3128/'     
     }
-  options {
-        // This is required if you want to clean before build
-        skipDefaultCheckout(true)
-  }
   stages {
       stage('CleanUp WorkSpace & Git Checkout') {
           steps {
@@ -19,13 +15,6 @@ pipeline {
               cleanWs()
               // We need to explicitly checkout from SCM here
               checkout scm
-              echo "Building ${env.JOB_NAME}..."
-          }
-	  post {
-              // Clean after build
-              always {
-		 echo "Clone Code for GirHub Repository Succeeded"
-              }
           }
       }	  
       stage('Build & Test') {
@@ -37,12 +26,6 @@ pipeline {
 	 }
 	 steps {
 	      sh 'python3 -m pytest'	 
-	 }
-	 post {
-	      always {
-		   archiveArtifacts artifacts: 'coverage/'
-		   echo "Build Docker Image and test Conatainer and stop & delete Conatainer Succeeded"   
-      	      }
 	 }
       }	 
       stage('Code Analysis') {
@@ -56,11 +39,6 @@ pipeline {
 		      -D sonar.python.coverage.reportPaths=*.js,*.html,*.json,*css'
 	      }
           }
-	  post {
-	     always {
-		   echo "Integration and reports send to sonarqube Succeeded"
-	     }
-	  }
       }
       stage('Deploy Atrifacts') {
 	  steps {
@@ -77,11 +55,24 @@ pipeline {
 		 }'''
 	     )
 	 }
-	  post {
-	     always {
-		   echo "Deploy Artifacts Jfrog Succeeded"
-	     }
-	  }
       }
    }
+}
+post {
+	 always {
+	     echo 'I have finished'
+	 }
+	 success { 
+	     echo 'I succeeded!'
+	 }
+	 unstable {
+	     echo 'I am unstable :/'
+	 }
+	 failure {
+             echo 'I failed :('
+	 }
+	 changed {
+	     echo 'Things are different ...'
+	 }
+   }	  
 }
