@@ -73,6 +73,5 @@ post {
 	 }
 	 changed {
 	     echo 'Things are different ...'
-	 }
-   }	  
+	 }	  
 }
