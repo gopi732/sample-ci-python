@@ -57,21 +57,21 @@ pipeline {
 	 }
       }
    }
-}
-post {
+   post {
 	 always {
 	     echo 'I have finished'
 	 }
-	 success { 
+         success { 
 	     echo 'I succeeded!'
 	 }
 	 unstable {
 	     echo 'I am unstable :/'
 	 }
 	 failure {
-             echo 'I failed :('
+	     echo 'I failed :('
 	 }
 	 changed {
 	     echo 'Things are different ...'
 	 }	  
+    }		 	  
 }
