@@ -34,6 +34,11 @@ pipeline {
 	      }
           }
       }
+      stage ('Archive artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'coverage/'
+            }
+      }	  
       stage('Deploy Atrifacts') {
 	  steps {
 	      rtUpload (
