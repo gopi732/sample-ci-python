@@ -65,7 +65,7 @@ pipeline {
 	     echo 'I failed :('
 	 }
 	 changed {
-	     echo 'Things are different ..'
+	     echo 'Things are different ...'
 	 }	  
     }		 	  
 }
